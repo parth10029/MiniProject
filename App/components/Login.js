@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TextInput, Button, Text, ImageBackground, Image} from 'react-native';
+import AIcon from 'react-native-vector-icons/AntDesign';
+import FIcon from 'react-native-vector-icons/FontAwesome';
 
 export default class Login extends Component<Props> {
 
@@ -47,8 +49,11 @@ export default class Login extends Component<Props> {
             <ImageBackground source={require('./Images/uiImages/background.jpg')} style={styles.backgroundImage} blurRadius={2}>
                 <View style={[styles.MainContainer,styles.logocontainer]}>
                     <Image source={require('./Images/uiImages/Company_logo.png')} style={styles.logo}/>
+
                     <Text style= {styles.title}>Welcome!</Text>
 
+                    <View style={styles.viewsection}>
+                        <AIcon name="user" size={30} color="#900" style={styles.usericon}/>
                     <TextInput
                         placeholder="Enter User UserName"
                         placeholderTextColor={'#fa0505'}
@@ -56,7 +61,9 @@ export default class Login extends Component<Props> {
                         underlineColorAndroid='transparent'
                         style={styles.TextInputStyleClass}
                     />
-
+                    </View>
+                    <View style={styles.viewsection}>
+                        <FIcon name="user-secret" size={30} color="#900" style={styles.usericon}/>
                     <TextInput
                         placeholder="Enter User Password"
                         onChangeText={password => this.setState({password : password})}
@@ -65,6 +72,7 @@ export default class Login extends Component<Props> {
                         style={styles.TextInputStyleClass}
                         secureTextEntry={true}
                     />
+                    </View>
                     <Button title="Login" onPress={this.UserLoginFunction} color="#fa0505" />
                     <Button title="Register" onPress={()=>navigate('registration')} color="#fa0505" />
                 </View>
@@ -97,16 +105,28 @@ const styles = StyleSheet.create({
         margin: 10
     },
 
+    viewsection:{
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    usericon:{
+        padding: 6,
+    },
+
     TextInputStyleClass: {
         textAlign: 'center',
         marginBottom: 7,
         height: 40,
+        flex:1,
         alignSelf:'stretch',
         fontWeight:'bold',
         borderWidth: 1,
         borderColor: '#000000',
         borderRadius: 5 ,
-        backgroundColor:'#ffffff'
+        backgroundColor:'#ffffff',
+        color: '#424242',
     },
 
     title:{
