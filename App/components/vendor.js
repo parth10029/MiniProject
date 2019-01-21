@@ -3,50 +3,12 @@ import { StyleSheet, View, TextInput, Button, Text, ImageBackground, Image,Touch
 import AIcon from 'react-native-vector-icons/AntDesign';
 import FIcon from 'react-native-vector-icons/FontAwesome';
 import Icon from "react-native-vector-icons/RNIMigration";
-import registration from './registration';
 
 export default class vendor extends Component<Props> {
 
     nav = () => {
-        this.props.navigation.navigate('registration');
+        this.props.navigation.navigate('addproduct');
     }
-
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         username: '',
-    //         name: '',
-    //         email: '',
-    //         usertype: '',
-    //         password: '',
-    //     }
-    // }
-    //
-    // UserLoginFunction = () =>{
-    //
-    //     fetch('http://localhost:5000/users', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({
-    //
-    //             username: this.state.username,
-    //
-    //             password: this.state.password
-    //         })
-    //     }).then((response) => response.json())
-    //         .then((responseJson) => {
-    //             // Showing response message coming from server after inserting records.
-    //             // alert(responseJson);
-    //             this.props.navigation.navigate('home');
-    //
-    //         }).catch((error) => {
-    //         console.error(error);
-    //     });
-    //
-    // }
 
     render() {
         return (
@@ -58,14 +20,14 @@ export default class vendor extends Component<Props> {
                     <View style={styles.viewsection}>
                     <TouchableOpacity>
                         <AIcon name="form" size={150} color="#900" style={styles.usericon} onPress={this.nav}/>
-                        <Text>Add product</Text>
+                        <Text style={styles.touchabletext}>Add product</Text>
                     </TouchableOpacity>
                     </View>
                     <View style={styles.viewsection}>
                     <TouchableOpacity>
                         {/*<AIcon name="form" size={30} color="#900" style={styles.usericon}/>*/}
                         <Image source={require('./Images/uiImages/myproduct.png')} style={styles.touchpic}/>
-                        <Text>My product</Text>
+                        <Text style={styles.touchabletext}>My product</Text>
                     </TouchableOpacity>
                     </View>
 
@@ -76,6 +38,11 @@ export default class vendor extends Component<Props> {
 }
 const styles = StyleSheet.create({
 
+    touchabletext:{
+        color:'#fa0505',
+        fontWeight: "bold",
+        textAlign:"center"
+    },
     touchpic:{
         flexDirection: 'row',
         width:200,

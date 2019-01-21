@@ -6,52 +6,54 @@ import {connect} from 'react-redux';
 import {showcat} from '../actions/customerActions';
 import {NavigationActions, StackActions} from "react-navigation";
 
-class vendor extends Component<Props> {
+class customer extends Component<Props> {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            dataSource: {},
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         dataSource: {},
+    //
+    //     }
+    // }
+    // showallcat = () =>{
+    //     const {dataSource} = this.state;
+    //     this.props.userRegistration({username, name, email, user_type,password})
+    //         .then((res)=>{
+    //             const {navigation} = this.props;
+    //             navigation.dispatch(StackActions.reset({
+    //                 index: 0,
+    //                 actions: [NavigationActions.navigate({ routeName: 'Login' })],
+    //             }));
+    //         }).catch(err=>{
+    //         alert("Registration Failed!")
+    //     })
+    // };
+     render() {
+         <View style={styles.TextInputStyleClass}><Text>hello user</Text></View>
+    //     return (
+    //         <ImageBackground source={require('./Images/uiImages/background.jpg')} style={styles.backgroundImage} blurRadius={2}>
+    //             <View style={[styles.MainContainer,styles.logocontainer]}>
+    //                 <Image source={require('./Images/uiImages/Company_logo.png')} style={styles.logo}/>
+    //
+    //                 <View style={styles.MainContainer1}>
+    //                     <FlatList
+    //                         data={this.showallcat}
+    //                         renderItem={({ item }) => (
+    //                             <View style={{ flex: 1, flexDirection: 'column', margin: 1 }}>
+    //                                 <Image style={styles.imageThumbnail} source={{ uri: item.src }} />
+    //                             </View>
+    //                         )}
+    //                         //Setting the number of column
+    //                         numColumns={3}
+    //                         keyExtractor={(item, index) => index}
+    //                     />
+    //                 </View>
+    //
+    //             </View>
+    //         </ImageBackground>
+    //     );
+     }
 
-        }
-    }
-    showallcat = () =>{
-        const {dataSource} = this.state;
-        this.props.userRegistration({username, name, email, user_type,password})
-            .then((res)=>{
-                const {navigation} = this.props;
-                navigation.dispatch(StackActions.reset({
-                    index: 0,
-                    actions: [NavigationActions.navigate({ routeName: 'Login' })],
-                }));
-            }).catch(err=>{
-            alert("Registration Failed!")
-        })
-    };
-    render() {
-        return (
-            <ImageBackground source={require('./Images/uiImages/background.jpg')} style={styles.backgroundImage} blurRadius={2}>
-                <View style={[styles.MainContainer,styles.logocontainer]}>
-                    <Image source={require('./Images/uiImages/Company_logo.png')} style={styles.logo}/>
-
-                    <View style={styles.MainContainer1}>
-                        <FlatList
-                            data={this.showallcat}
-                            renderItem={({ item }) => (
-                                <View style={{ flex: 1, flexDirection: 'column', margin: 1 }}>
-                                    <Image style={styles.imageThumbnail} source={{ uri: item.src }} />
-                                </View>
-                            )}
-                            //Setting the number of column
-                            numColumns={3}
-                            keyExtractor={(item, index) => index}
-                        />
-                    </View>
-
-                </View>
-            </ImageBackground>
-        );
-    }
 }
 const styles = StyleSheet.create({
 

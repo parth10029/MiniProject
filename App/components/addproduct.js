@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TextInput, Button, Text, ImageBackground, Image} from 'react-native';
 import AIcon from 'react-native-vector-icons/AntDesign';
-import FIcon from 'react-native-vector-icons/FontAwesome';
+import EIcon from 'react-native-vector-icons/Entypo';
 import {NavigationActions, StackActions} from "react-navigation";
 
 export default class addproduct extends Component<Props> {
@@ -46,27 +46,28 @@ export default class addproduct extends Component<Props> {
                         <AIcon name="user" size={30} color="#900" style={styles.usericon}/>
                         <TextInput
                             autoCapitalize="none"
-                            placeholder="Enter User UserName"
+                            placeholder="Enter Product name"
                             placeholderTextColor={'#fa0505'}
                             onChangeText={username => this.setState({username : username})}
                             underlineColorAndroid='transparent'
                             style={styles.TextInputStyleClass}
                         />
                     </View>
+
                     <View style={styles.viewsection}>
-                        <FIcon name="user-secret" size={30} color="#900" style={styles.usericon}/>
+                        <EIcon name="price-tag" size={30} color="#900" style={styles.usericon}/>
                         <TextInput
                             autoCapitalize="none"
-                            placeholder="Enter User Password"
-                            onChangeText={password => this.setState({password : password})}
+                            placeholder="Price"
                             placeholderTextColor={'#fa0505'}
+                            onChangeText={username => this.setState({username : username})}
                             underlineColorAndroid='transparent'
                             style={styles.TextInputStyleClass}
-                            secureTextEntry={true}
                         />
                     </View>
+
                     <Button title="Login" onPress={this.userlogin} color="#fa0505" />
-                    <Button title="Register" onPress={()=>navigate('registration')} color="#fa0505" />
+                    <Button title="Reset" onPress={()=>navigate('registration')} color="#fa0505" />
                 </View>
             </ImageBackground>
         );

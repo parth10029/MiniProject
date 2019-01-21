@@ -1,15 +1,16 @@
 import {user_login,SET_LOADER} from "./types";
 
-export const userLogin = (username, password) => {
+export const userLogin = (userData ) => {
+    debugger
     return (dispatch, getState) => {
         dispatch({type: SET_LOADER,payload: true});
-        return fetch('http://localhost:5000/loginusers/:'+username+'/:'+password)
+        return fetch('http://localhost:5000/loginusers/'+userData.username+'/'+userData.password)
             .then((response) => response.json())
             .then((responseJson) => {
-                dispatch({type: SET_LOADER,payload: false});
+
                 dispatch({
                     type: user_login,
-                    payload: responseJson.data
+                    payload: responseJson
                 });
                 return Promise.resolve(responseJson);
             })

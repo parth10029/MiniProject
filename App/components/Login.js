@@ -18,17 +18,28 @@ class Login extends Component<Props> {
     }
 
     userlogin = () =>{
+        debugger
         const {username,password} = this.state;
         this.props.userLogin({username,password})
             .then(res=>{
             const {userData} = this.props;
-            if(userData.id){
-                alert('Welcome '+userData.username)
+            if(userData.user_type === "customer"){
+                //alert('Welcome '+userData.username)
+                const {navigation} = this.props;
+                navigation.dispatch(StackActions.reset({
+                    index: 0,
+                    actions: [NavigationActions.navigate({ routeName: 'registration' })],
+                }));
             }else{
-                alert(userData.msg)
+                // alert(userData.msg)
+                const {navigation} = this.props;
+                navigation.dispatch(StackActions.reset({
+                    index: 0,
+                    actions: [NavigationActions.navigate({ routeName: 'vendor' })],
+                }));
             }
         }).catch(err=>{
-            alert(err)
+            alert("User not exists please Register")
         })
         // const {username, password} = this.state;
         // this.props.userLogin(username, password)
