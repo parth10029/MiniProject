@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TextInput, Button, Text, ImageBackground, Image} from 'react-native';
-import { Switch } from 'react-native-switch';
-//import {createStackNavigator,createAppContainer} from 'react-navigation';
+import { StyleSheet, View, TextInput, Button, Text, ImageBackground, Image, TouchableOpacity} from 'react-native';
+import {connect} from 'react-redux';
 
+import { Switch } from 'react-native-switch';
+import {NavigationActions,StackActions} from 'react-navigation';
+import {emailEmpty,passwordEmpty,checkEmail} from '../validation/Validation';
 import Login from './Login';
 import AIcon from 'react-native-vector-icons/AntDesign';
 import FIcon from 'react-native-vector-icons/FontAwesome';
 import EIcon from 'react-native-vector-icons/Entypo';
 import FEIcon from 'react-native-vector-icons/Feather';
 //import MIcon from 'react-native-vector-icons/MaterialIcons';
+import {userRegistration} from '../actions/registrationActions';
+import {RadioGroup, RadioButton} from 'react-native-flexi-radio-button';
 
-export default class registration extends Component<Props> {
+
+ class registration extends Component<Props> {
 
     constructor(props) {
         super(props);
@@ -18,46 +23,28 @@ export default class registration extends Component<Props> {
             username: '',
             name: '',
             email: '',
-            usertype: '',
+            user_type: '',
             password: '',
             tnc:false
         }
     }
-
-
-    UserRegistrationFunction = () =>{
-        fetch('http://localhost:5000/users', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-
-                name: this.state.name,
-
-                email: this.state.email,
-
-                username: this.state.username,
-
-                user_type: this.state.user_type,
-
-                password: this.state.password
-
-            })
-        }).then((response) => response.json())
-            .then((responseJson) => {
-
-                // Showing response message coming from server after inserting records.
-                //alert(JSON.stringify(responseJson));
-                this.props.navigation.navigate('Login');
-            }).catch((error) => {
-            console.error(error);
-        });
-
-    }
+    register = () =>{
+        //validation here...
+        const {username, name, email, user_type,password} = this.state;
+        this.props.userRegistration({username, name, email, user_type,password})
+            .then((res)=>{
+            const {navigation} = this.props;
+            navigation.dispatch(StackActions.reset({
+                index: 0,
+                actions: [NavigationActions.navigate({ routeName: 'Login' })],
+            }));
+        }).catch(err=>{
+            alert("Registration Failed!")
+        })
+    };
 
     render() {
+        const { loading } = this.props;
         return (
             <ImageBackground source={require('./Images/uiImages/background.jpg')} style={styles.backgroundImage} blurRadius={2}>
                 <View style={[styles.MainContainer,styles.logocontainer]}>
@@ -100,14 +87,36 @@ export default class registration extends Component<Props> {
 
                     <View style={styles.viewsection}>
                         <FEIcon name="type" size={30} color="#900" style={styles.usericon}/>
-                    <TextInput
-                        placeholder="Enter User type"
-                        onChangeText={usertype => this.setState({user_type : usertype})}
-                        placeholderTextColor={'#fa0505'}
-                        underlineColorAndroid='transparent'
-                        style={styles.TextInputStyleClass}
-                    />
+                        <RadioGroup
+                            onSelect = {(index, value) => {this.setState({user_type:value})}}
+                            size={20}
+                            thickness={2}
+                            color={'#fa0505'}
+                            selectedIndex={1}
+                            style={{flexDirection:'row'}}
+                        >
+                            <RadioButton value={'customer'}>
+                                <Text>Customer</Text>
+                            </RadioButton>
+
+                            <RadioButton value={'vendor'}>
+                                <Text>Vendor</Text>
+                            </RadioButton>
+
+                        </RadioGroup>
                     </View>
+
+
+                    {/*<View style={styles.viewsection}>*/}
+                        {/*<FEIcon name="type" size={30} color="#900" style={styles.usericon}/>*/}
+                    {/*<TextInput*/}
+                        {/*placeholder="Enter User type"*/}
+                        {/*onChangeText={usertype => this.setState({user_type : usertype})}*/}
+                        {/*placeholderTextColor={'#fa0505'}*/}
+                        {/*underlineColorAndroid='transparent'*/}
+                        {/*style={styles.TextInputStyleClass}*/}
+                    {/*/>*/}
+                    {/*</View>*/}
 
                     <View style={styles.viewsection}>
                         <FIcon name="user-secret" size={30} color="#900" style={styles.usericon}/>
@@ -146,10 +155,12 @@ export default class registration extends Component<Props> {
                     />
                     </View>
 
+                    <TouchableOpacity style={styles.button} onPress={this.register} >
                     <View style={styles.viewsection}>
                         <EIcon name="add-user" size={30} color="#900" style={styles.usericon}/>
-                    <Button title="Submit" onPress={this.UserRegistrationFunction} color="#fa0505" />
+                        <Text color="#fa0505">Submit</Text>
                     </View>
+                    </TouchableOpacity>
                 </View>
             </ImageBackground>
         );
@@ -157,6 +168,12 @@ export default class registration extends Component<Props> {
 }
 const styles = StyleSheet.create({
 
+    button: {
+        width:'99%',
+        alignItems: 'center',
+        backgroundColor: '#F9BCBC',
+        padding: 10
+    },
     backgroundImage:{
         flex:1,
         resizeMode: 'cover',
@@ -211,3 +228,13 @@ const styles = StyleSheet.create({
         marginBottom: 15
     }
 });
+const mapStateToProps = (state) => {
+    const {loading} = state.reg_user;
+    return {
+        loading
+    };
+};
+
+export default connect(mapStateToProps,{
+    userRegistration
+})(registration);

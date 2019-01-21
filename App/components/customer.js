@@ -2,71 +2,50 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TextInput, Button, Text, ImageBackground, Image,TouchableOpacity} from 'react-native';
 import AIcon from 'react-native-vector-icons/AntDesign';
 import FIcon from 'react-native-vector-icons/FontAwesome';
+import {connect} from 'react-redux';
+import {showcat} from '../actions/customerActions';
+import {NavigationActions, StackActions} from "react-navigation";
 
-export default class vendor extends Component<Props> {
+class vendor extends Component<Props> {
 
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         username: '',
-    //         name: '',
-    //         email: '',
-    //         usertype: '',
-    //         password: '',
-    //     }
-    // }
-    //
-    // UserLoginFunction = () =>{
-    //
-    //     fetch('http://localhost:5000/users', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({
-    //
-    //             username: this.state.username,
-    //
-    //             password: this.state.password
-    //         })
-    //     }).then((response) => response.json())
-    //         .then((responseJson) => {
-    //             // Showing response message coming from server after inserting records.
-    //             // alert(responseJson);
-    //             this.props.navigation.navigate('home');
-    //
-    //         }).catch((error) => {
-    //         console.error(error);
-    //     });
-    //
-    // }
+    constructor(props) {
+        super(props);
+        this.state = {
+            dataSource: {},
 
+        }
+    }
+    showallcat = () =>{
+        const {dataSource} = this.state;
+        this.props.userRegistration({username, name, email, user_type,password})
+            .then((res)=>{
+                const {navigation} = this.props;
+                navigation.dispatch(StackActions.reset({
+                    index: 0,
+                    actions: [NavigationActions.navigate({ routeName: 'Login' })],
+                }));
+            }).catch(err=>{
+            alert("Registration Failed!")
+        })
+    };
     render() {
         return (
             <ImageBackground source={require('./Images/uiImages/background.jpg')} style={styles.backgroundImage} blurRadius={2}>
                 <View style={[styles.MainContainer,styles.logocontainer]}>
                     <Image source={require('./Images/uiImages/Company_logo.png')} style={styles.logo}/>
 
-                    <Text style= {styles.title}>Welcome!</Text>
-                    <View style={styles.viewsection}>
-                        <TouchableOpacity>
-                            <Image source={require('./Images/uiImages/tablet.png')} style={styles.touchpic}/>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity>
-                            <Image source={require('./Images/uiImages/mobile.png')} style={styles.touchpic}/>
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={styles.viewsection}>
-                        <TouchableOpacity>
-                            <Image source={require('./Images/uiImages/computer.png')} style={styles.touchpic}/>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity>
-                            <Image source={require('./Images/uiImages/wearable.png')} style={styles.touchpic}/>
-                        </TouchableOpacity>
+                    <View style={styles.MainContainer1}>
+                        <FlatList
+                            data={this.showallcat}
+                            renderItem={({ item }) => (
+                                <View style={{ flex: 1, flexDirection: 'column', margin: 1 }}>
+                                    <Image style={styles.imageThumbnail} source={{ uri: item.src }} />
+                                </View>
+                            )}
+                            //Setting the number of column
+                            numColumns={3}
+                            keyExtractor={(item, index) => index}
+                        />
                     </View>
 
                 </View>
@@ -128,6 +107,17 @@ const styles = StyleSheet.create({
         backgroundColor:'#ffffff',
         color: '#424242',
     },
+    MainContainer1: {
+        justifyContent: 'center',
+        flex: 1,
+        paddingTop: 30,
+    },
+
+    imageThumbnail: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 100,
+    },
 
     title:{
         fontSize: 22,
@@ -136,3 +126,13 @@ const styles = StyleSheet.create({
         marginBottom: 15
     }
 });
+const mapStateToProps = (state) => {
+    const {loading} = state.reg_user;
+    return {
+        loading
+    };
+};
+
+export default connect(mapStateToProps,{
+    showcat
+})(customer);

@@ -3,45 +3,33 @@ import { StyleSheet, View, TextInput, Button, Text, ImageBackground, Image} from
 import AIcon from 'react-native-vector-icons/AntDesign';
 import FIcon from 'react-native-vector-icons/FontAwesome';
 import {NavigationActions, StackActions} from "react-navigation";
-import {connect} from "react-redux";
-import {userLogin} from "../actions/loginActions";
 
-class Login extends Component<Props> {
+export default class addproduct extends Component<Props> {
 
     constructor(props) {
         super(props);
         this.state = {
-            userData: [],
-            username: '',
+
+            name: '',
             password: '',
+
         }
     }
 
     userlogin = () =>{
-        const {username,password} = this.state;
-        this.props.userLogin({username,password})
-            .then(res=>{
-            const {userData} = this.props;
-            if(userData.id){
-                alert('Welcome '+userData.username)
-            }else{
-                alert(userData.msg)
-            }
-        }).catch(err=>{
-            alert(err)
+        //validation here...
+        const {username, password} = this.state;
+        this.props.userLogin(username, password)
+            .then((res)=>{
+                //alert({res});
+                const {navigation} = this.props;
+                navigation.dispatch(StackActions.reset({
+                    index: 0,
+                    actions: [NavigationActions.navigate({ routeName: 'home' })],
+                }));
+            }).catch(err=>{
+            alert("Login Failed!")
         })
-        // const {username, password} = this.state;
-        // this.props.userLogin(username, password)
-        //     .then((res)=>{
-        //         //alert({res});
-        //         const {navigation} = this.props;
-        //         navigation.dispatch(StackActions.reset({
-        //             index: 0,
-        //             actions: [NavigationActions.navigate({ routeName: 'home' })],
-        //         }));
-        //     }).catch(err=>{
-        //     alert("Login Failed!")
-        // })
     };
 
     render() {
@@ -56,26 +44,26 @@ class Login extends Component<Props> {
 
                     <View style={styles.viewsection}>
                         <AIcon name="user" size={30} color="#900" style={styles.usericon}/>
-                    <TextInput
-                        autoCapitalize="none"
-                        placeholder="Enter User UserName"
-                        placeholderTextColor={'#fa0505'}
-                        onChangeText={username => this.setState({username : username})}
-                        underlineColorAndroid='transparent'
-                        style={styles.TextInputStyleClass}
-                    />
+                        <TextInput
+                            autoCapitalize="none"
+                            placeholder="Enter User UserName"
+                            placeholderTextColor={'#fa0505'}
+                            onChangeText={username => this.setState({username : username})}
+                            underlineColorAndroid='transparent'
+                            style={styles.TextInputStyleClass}
+                        />
                     </View>
                     <View style={styles.viewsection}>
                         <FIcon name="user-secret" size={30} color="#900" style={styles.usericon}/>
-                    <TextInput
-                        autoCapitalize="none"
-                        placeholder="Enter User Password"
-                        onChangeText={password => this.setState({password : password})}
-                        placeholderTextColor={'#fa0505'}
-                        underlineColorAndroid='transparent'
-                        style={styles.TextInputStyleClass}
-                        secureTextEntry={true}
-                    />
+                        <TextInput
+                            autoCapitalize="none"
+                            placeholder="Enter User Password"
+                            onChangeText={password => this.setState({password : password})}
+                            placeholderTextColor={'#fa0505'}
+                            underlineColorAndroid='transparent'
+                            style={styles.TextInputStyleClass}
+                            secureTextEntry={true}
+                        />
                     </View>
                     <Button title="Login" onPress={this.userlogin} color="#fa0505" />
                     <Button title="Register" onPress={()=>navigate('registration')} color="#fa0505" />
@@ -140,15 +128,3 @@ const styles = StyleSheet.create({
         marginBottom: 15
     }
 });
-
-const mapStateToProps = (state) => {
-    const {loading,userData} = state.userlogin;
-    return {
-        loading,
-        userData
-    };
-};
-
-export default connect(mapStateToProps,{
-    userLogin
-})(Login);

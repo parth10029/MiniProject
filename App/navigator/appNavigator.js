@@ -10,9 +10,15 @@ const drawer=createStackNavigator({
     Login,
     home,
     vendor,
-    customer
+    customer,
 },{
-    initialRouteName:'Login'
-});
+        headerMode: 'none',
+        navigationOptions: {
+            headerVisible: false
+        }
+    ,initialRouteName:'Login'
+    }
+
+);
 
 export default createAppContainer(drawer);

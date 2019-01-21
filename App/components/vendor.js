@@ -3,8 +3,13 @@ import { StyleSheet, View, TextInput, Button, Text, ImageBackground, Image,Touch
 import AIcon from 'react-native-vector-icons/AntDesign';
 import FIcon from 'react-native-vector-icons/FontAwesome';
 import Icon from "react-native-vector-icons/RNIMigration";
+import registration from './registration';
 
 export default class vendor extends Component<Props> {
+
+    nav = () => {
+        this.props.navigation.navigate('registration');
+    }
 
     // constructor(props) {
     //     super(props);
@@ -52,7 +57,7 @@ export default class vendor extends Component<Props> {
                     <Text style= {styles.title}>Welcome!</Text>
                     <View style={styles.viewsection}>
                     <TouchableOpacity>
-                        <AIcon name="form" size={150} color="#900" style={styles.usericon}/>
+                        <AIcon name="form" size={150} color="#900" style={styles.usericon} onPress={this.nav}/>
                         <Text>Add product</Text>
                     </TouchableOpacity>
                     </View>
