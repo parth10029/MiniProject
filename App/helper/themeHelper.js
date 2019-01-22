@@ -19,7 +19,7 @@ export function normalize(size) {
 
 module.exports = {
     //API Constant
-    appColor: '#F5FCFF',
+    appColor: '#F9BCBC',
 
     screen: Dimensions.get('window'),
     isIOS: Platform.OS === "ios",

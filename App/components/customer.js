@@ -1,62 +1,124 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TextInput, Button, Text, ImageBackground, Image,TouchableOpacity} from 'react-native';
+import { StyleSheet, View, TextInput, Button, Text, ImageBackground, Image,TouchableOpacity,FlatList,ScrollView} from 'react-native';
 import AIcon from 'react-native-vector-icons/AntDesign';
 import FIcon from 'react-native-vector-icons/FontAwesome';
 import {connect} from 'react-redux';
-import {showcat} from '../actions/customerActions';
 import {NavigationActions, StackActions} from "react-navigation";
+import {showcat} from "../actions/categoryActions";
+import constant from '../helper/themeHelper';
 
 class customer extends Component<Props> {
+    constructor(props) {
+        super(props);
+        this.state = {
+            refreshing:false
+        }
+    }
+    keyExtractor = (item) => {
+        return item.id + "";
+    };
 
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         dataSource: {},
-    //
-    //     }
-    // }
-    // showallcat = () =>{
-    //     const {dataSource} = this.state;
-    //     this.props.userRegistration({username, name, email, user_type,password})
-    //         .then((res)=>{
-    //             const {navigation} = this.props;
-    //             navigation.dispatch(StackActions.reset({
-    //                 index: 0,
-    //                 actions: [NavigationActions.navigate({ routeName: 'Login' })],
-    //             }));
-    //         }).catch(err=>{
-    //         alert("Registration Failed!")
-    //     })
+    renderSeparator = ({leadingItem, section})=>{
+        return <View style={{height:10}}/>;
+    };
+
+    renderEmpty = () => {
+        return <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+            <Text style={{fontSize:15}}>
+                {"No data found"}
+            </Text>
+        </View>
+    };
+
+    onRefresh = () => {
+        this.setState({refreshing: true});
+        this.props.showcat().then(res=>{
+            this.setState({refreshing: false});
+        });
+    };
+
+    // onRowClick = (item) => {
+    //     this.props.navigation.navigate('userDetails',{userDetail: item});
     // };
+
+    renderItem = ({item, index}) => {
+        const {rowContainer} = styles;
+        return(
+            <ScrollView>
+                <View style={styles.imageThumbnail}>
+            <TouchableOpacity
+                style={styles.opacitycss}
+               // onPress={()=>this.onRowClick(item)}
+            >
+                <View key={index} style={styles.rowContainer}>
+                    <Image source={{uri:'http://localhost:5000/'+item.image}} style={styles.flatimage}/>
+                    <Text style={{fontSize: 20}}>
+                        {item.name}</Text>
+                </View>
+            </TouchableOpacity>
+                </View>
+            </ScrollView>
+        )
+    };
+
+
      render() {
-         <View style={styles.TextInputStyleClass}><Text>hello user</Text></View>
-    //     return (
-    //         <ImageBackground source={require('./Images/uiImages/background.jpg')} style={styles.backgroundImage} blurRadius={2}>
-    //             <View style={[styles.MainContainer,styles.logocontainer]}>
-    //                 <Image source={require('./Images/uiImages/Company_logo.png')} style={styles.logo}/>
-    //
-    //                 <View style={styles.MainContainer1}>
-    //                     <FlatList
-    //                         data={this.showallcat}
-    //                         renderItem={({ item }) => (
-    //                             <View style={{ flex: 1, flexDirection: 'column', margin: 1 }}>
-    //                                 <Image style={styles.imageThumbnail} source={{ uri: item.src }} />
-    //                             </View>
-    //                         )}
-    //                         //Setting the number of column
-    //                         numColumns={3}
-    //                         keyExtractor={(item, index) => index}
-    //                     />
-    //                 </View>
-    //
-    //             </View>
-    //         </ImageBackground>
-    //     );
+         const {refreshing} = this.state;
+         const {userList} = this.props;
+         console.log(this.props);
+
+        return (
+            <ImageBackground source={require('./Images/uiImages/background.jpg')} style={styles.backgroundImage} blurRadius={2}>
+                <View style={[styles.MainContainer,styles.logocontainer]}>
+                    <Image source={require('./Images/uiImages/Company_logo.png')} style={styles.logo}/>
+                    <View style={styles.container}>
+                        <FlatList data={userList}
+                                  contentContainerStyle={{top:20}}
+                                  automaticallyAdjustContentInsets={false}
+                                  renderItem={this.renderItem}
+                                  keyExtractor={this.keyExtractor}
+                                  ItemSeparatorComponent={this.renderSeparator}
+                                  ListEmptyComponent={this.renderEmpty}
+                                  onRefresh={this.onRefresh}
+                                  refreshing={refreshing}
+                                  ListFooterComponent={<View style={{ height: 50}}/>}
+                        />
+                    </View>
+                </View>
+            </ImageBackground>
+        );
      }
 
 }
 const styles = StyleSheet.create({
 
+    opacitycss:{
+        flexDirection:'row',
+    },
+    titleText: {
+        fontSize: 12,
+        alignSelf: 'center',
+        marginBottom: 20
+    },
+    rowContainer: {
+        borderRadius:5,
+        padding:25,
+        borderWidth:1,
+        borderColor:'#FF0000',
+        marginLeft:10,
+        marginRight:10
+    },
+    flatimage:{
+        height:'80%',
+        width:'100%',
+        flexDirection:'row'
+    },
+    container: {
+        //flex: 1,
+        width:'100%',
+        backgroundColor: constant.appColor,
+        justifyContent:'center',
+    },
     touchpic:{
         flexDirection: 'row',
         width:190,
@@ -118,7 +180,10 @@ const styles = StyleSheet.create({
     imageThumbnail: {
         justifyContent: 'center',
         alignItems: 'center',
+        flexDirection:'row',
         height: 100,
+        flex:1,
+        margin: 5,
     },
 
     title:{
@@ -128,10 +193,12 @@ const styles = StyleSheet.create({
         marginBottom: 15
     }
 });
+
 const mapStateToProps = (state) => {
-    const {loading} = state.reg_user;
+    const {loading,userList} = state.fetchcategory;
     return {
-        loading
+        loading,
+        userList
     };
 };
 
