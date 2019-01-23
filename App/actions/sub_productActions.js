@@ -1,12 +1,13 @@
-import {SET_POST} from "./types";
+import {SET_SUBPRODUCT_LIST} from "./types";
 
-export const getPost = () => {
+export const showsubproduct = (subproductList) => {
+    debugger
     return (dispatch, getState) => {
-        return fetch('https://jsonplaceholder.typicode.com/posts')
+        return fetch('http://localhost:5000/getsubproduct_byid/'+subproductList)
             .then((response) => response.json())
             .then((responseJson) => {
                 dispatch({
-                    type: SET_POST,
+                    type: SET_SUBPRODUCT_LIST,
                     payload: responseJson
                 });
                 return Promise.resolve(true);

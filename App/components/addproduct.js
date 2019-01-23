@@ -6,12 +6,14 @@ import {connect} from 'react-redux';
 import {showcat} from '../actions/categoryActions';
 import {NavigationActions, StackActions} from "react-navigation";
 import ImagePicker from "react-native-image-picker";
+import AwesomePicker from 'react-native-awesome-picker';
+import constant from '../helper/themeHelper';
 
-
-export default class customer extends Component<Props> {
+export default class addproduct extends Component<Props> {
 
     state = {
-        pickedImage: null
+        pickedImage: null,
+        language:'js'
     }
 
     reset = () => {
@@ -67,6 +69,15 @@ export default class customer extends Component<Props> {
                         />
                     </View>
 
+                    <View style={styles.container12}>
+                        <AwesomePicker
+                            selectedValue={this.state.language}
+                            onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue, itemIndex})}>
+                            <AwesomePicker.Item label="Java" value="java"/>
+                            <AwesomePicker.Item label="JavaScript" value="js"/>
+                        </AwesomePicker>
+                    </View>
+
                     <View>
                         <View style={styles.container11}>
                             <View style={styles.placeholder11}>
@@ -89,6 +100,22 @@ export default class customer extends Component<Props> {
 }
 const styles = StyleSheet.create({
 
+    container12: {
+        justifyContent: 'center',
+        textAlign: 'center',
+        marginBottom: 7,
+        height: 40,
+        flex:1,
+        alignSelf:'stretch',
+        fontWeight:'bold',
+        borderWidth: 1,
+        borderColor: '#fa0505',
+        borderRadius: 5 ,
+        backgroundColor:'#ffffff',
+        color: '#424242',
+    },
+
+    //
     container11: {
         alignItems:"center"
     },
@@ -158,7 +185,7 @@ const styles = StyleSheet.create({
         alignSelf:'stretch',
         fontWeight:'bold',
         borderWidth: 1,
-        borderColor: '#000000',
+        borderColor: '#fa0505',
         borderRadius: 5 ,
         backgroundColor:'#ffffff',
         color: '#424242',

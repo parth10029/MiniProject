@@ -18,7 +18,6 @@ class Login extends Component<Props> {
     }
 
     userlogin = () =>{
-        debugger
         const {username,password} = this.state;
         this.props.userLogin({username,password})
             .then(res=>{

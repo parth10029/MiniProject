@@ -1,18 +1,23 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, TextInput, Button, Text, ImageBackground, Image,TouchableOpacity,FlatList,ScrollView} from 'react-native';
-import AIcon from 'react-native-vector-icons/AntDesign';
-import FIcon from 'react-native-vector-icons/FontAwesome';
-import {connect} from 'react-redux';
-import {NavigationActions, StackActions} from "react-navigation";
-import {showcat} from "../actions/categoryActions";
-import constant from '../helper/themeHelper';
+import React, {Component} from 'react';
+import {View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, ImageBackground, FlatList} from 'react-native';
+import constant from "../helper/themeHelper";
+import {connect} from "react-redux";
+import {showsubproduct} from "../actions/sub_productActions";
 
-class customer extends Component<Props> {
-    constructor(props) {
+class subproduct extends Component {
+
+
+
+    constructor(props){
         super(props);
-        this.state = {
-            refreshing:false
+        this.state={
+            subproduct: props.navigation.state.params.subproductdetail,
+            refreshing:false,
         }
+    }
+
+    componentDidMount(){
+        this.props.showsubproduct(this.state.subproduct.id)
     }
     keyExtractor = (item) => {
         return item.id + "";
@@ -31,49 +36,51 @@ class customer extends Component<Props> {
     };
 
     onRefresh = () => {
+        debugger
         this.setState({refreshing: true});
-        this.props.showcat().then(res=>{
+        debugger
+        this.props.showsubproduct(this.state.subproduct.id).then(res=>{
             this.setState({refreshing: false});
         });
     };
 
     onRowClick = (item) => {
-
-        this.props.navigation.navigate('subproduct',{subproductdetail: item});
+        this.props.navigation.navigate('product',{subproduct: item});
     };
 
     renderItem = ({item, index}) => {
+
         const {rowContainer} = styles;
         return(
             <ScrollView>
-                <View style={styles.imageThumbnail}>
-            <TouchableOpacity
-                style={styles.opacitycss}
-                onPress={()=>this.onRowClick(item)}
-            >
-                <View key={index} style={styles.rowContainer}>
-                    <Image source={{uri:'http://localhost:5000/'+item.image}} style={styles.flatimage}/>
-                    <Text style={{fontSize: 20}}>
-                        {item.name}</Text>
-                </View>
-            </TouchableOpacity>
-                </View>
+
+                    <TouchableOpacity
+                        style={styles.opacitycss}
+                        onPress={()=>this.onRowClick(item)}
+                    >
+                        <View key={index} style={styles.rowContainer}>
+                            <Image source={{uri:'http://localhost:5000/'+item.image}} style={styles.flatimage} resizeMode='contain'/>
+                            <Text style={{fontSize: 20}}>
+                                {item.name}</Text>
+                        </View>
+                    </TouchableOpacity>
+
             </ScrollView>
         )
     };
 
 
-     render() {
-         const {refreshing} = this.state;
-         const {userList} = this.props;
-         console.log(this.props);
+    render() {
+        const {refreshing} = this.state;
+        const {subproductList} = this.props;
+        console.log(this.props);
 
         return (
             <ImageBackground source={require('./Images/uiImages/background.jpg')} style={styles.backgroundImage} blurRadius={2}>
                 <View style={[styles.MainContainer,styles.logocontainer]}>
                     <Image source={require('./Images/uiImages/Company_logo.png')} style={styles.logo}/>
                     <View style={styles.container}>
-                        <FlatList data={userList}
+                        <FlatList data={subproductList}
                                   contentContainerStyle={{top:20}}
                                   automaticallyAdjustContentInsets={false}
                                   renderItem={this.renderItem}
@@ -88,13 +95,14 @@ class customer extends Component<Props> {
                 </View>
             </ImageBackground>
         );
-     }
-
+    }
 }
-const styles = StyleSheet.create({
 
+const styles = StyleSheet.create({
     opacitycss:{
+        //flex:1,
         flexDirection:'row',
+
     },
     titleText: {
         fontSize: 12,
@@ -102,20 +110,22 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     rowContainer: {
+        flex:1,
         borderRadius:5,
         padding:25,
         borderWidth:1,
         borderColor:'#FF0000',
         marginLeft:10,
-        marginRight:10
+        marginRight:10,
+
     },
     flatimage:{
-        height:'80%',
-        width:'100%',
-        flexDirection:'row'
+        height:100,
+        width:100,
+
     },
     container: {
-        //flex: 1,
+        flex: 1,
         width:'100%',
         backgroundColor: constant.appColor,
         justifyContent:'center',
@@ -151,7 +161,7 @@ const styles = StyleSheet.create({
     },
 
     viewsection:{
-        flex:1,
+        //flex:1,
         flexDirection: 'row',
     },
 
@@ -163,7 +173,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 7,
         height: 40,
-        flex:1,
+        //flex:1,
         alignSelf:'stretch',
         fontWeight:'bold',
         borderWidth: 1,
@@ -174,7 +184,7 @@ const styles = StyleSheet.create({
     },
     MainContainer1: {
         justifyContent: 'center',
-        flex: 1,
+        //flex: 1,
         paddingTop: 30,
     },
 
@@ -183,7 +193,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection:'row',
         height: 100,
-        flex:1,
+        //flex:1,
         margin: 5,
     },
 
@@ -196,13 +206,14 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-    const {loading,userList} = state.fetchcategory;
+    const {loading,subproductList} = state.onRefreshsubproduct;
     return {
         loading,
-        userList
+        subproductList
+
     };
 };
 
 export default connect(mapStateToProps,{
-    showcat
-})(customer);
+    showsubproduct
+})(subproduct);
