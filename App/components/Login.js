@@ -27,7 +27,7 @@ class Login extends Component<Props> {
                 const {navigation} = this.props;
                 navigation.dispatch(StackActions.reset({
                     index: 0,
-                    actions: [NavigationActions.navigate({ routeName: 'registration' })],
+                    actions: [NavigationActions.navigate({ routeName: 'customer' })],
                 }));
             }else{
                 // alert(userData.msg)

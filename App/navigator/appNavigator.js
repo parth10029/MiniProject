@@ -7,6 +7,7 @@ import customer from '../components/customer';
 import addproduct from '../components/addproduct';
 import product from '../components/product';
 import subproduct from '../components/subproduct';
+import productdetail from '../components/productdetail';
 
 const drawer=createStackNavigator({
     registration,
@@ -16,7 +17,8 @@ const drawer=createStackNavigator({
     customer,
     addproduct,
     product,
-    subproduct
+    subproduct,
+    productdetail
 },{
         headerMode: 'none',
         navigationOptions: {

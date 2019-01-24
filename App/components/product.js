@@ -3,6 +3,8 @@ import {View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, ImageBackgr
 import constant from "../helper/themeHelper";
 import {connect} from "react-redux";
 import {showproduct} from "../actions/productActions";
+import IIcon from "react-native-vector-icons/Ionicons";
+import AIcon from "react-native-vector-icons/AntDesign";
 
 class product extends Component {
 
@@ -17,9 +19,8 @@ class product extends Component {
     }
     componentDidMount(){
 
-        this.props.showproduct(this.state.productdetails).then((res)=>{
-            debugger
-        })
+        this.props.showproduct(this.state.productdetails.id)
+
     }
     keyExtractor = (item) => {
         return item.id + "";
@@ -45,9 +46,9 @@ class product extends Component {
         });
     };
 
-    // onRowClick = (item) => {
-    //     //this.props.navigation.navigate('productdetails',{productdetail: item});
-    // };
+    onRowClick = (item) => {
+        this.props.navigation.navigate('productdetail',{productdetails: item});
+    };
 
     renderItem = ({item, index}) => {
         const {rowContainer} = styles;
@@ -56,7 +57,7 @@ class product extends Component {
 
                     <TouchableOpacity
                         style={styles.opacitycss}
-                       // onPress={()=>this.onRowClick(item)}
+                        onPress={()=>this.onRowClick(item)}
                     >
                         <View key={index} style={styles.rowContainer}>
                             <Image source={{uri:'http://localhost:5000/'+item.image}} style={styles.flatimage} resizeMode='contain'/>
@@ -77,6 +78,14 @@ class product extends Component {
 
         return (
             <ImageBackground source={require('./Images/uiImages/background.jpg')} style={styles.backgroundImage} blurRadius={2}>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 30}}>
+                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('subproduct')}>
+                        <IIcon name="ios-arrow-back" size={30} style={styles.backbutton}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('customer')}>
+                        <AIcon name="home" size={30} style={styles.homebutton}/>
+                    </TouchableOpacity>
+                </View>
                 <View style={[styles.MainContainer,styles.logocontainer]}>
                     <Image source={require('./Images/uiImages/Company_logo.png')} style={styles.logo}/>
                     <View style={styles.container}>
@@ -99,6 +108,14 @@ class product extends Component {
 }
 
 const styles = StyleSheet.create({
+
+    homebutton:{
+        color:"#000000",
+    },
+
+    backbutton:{
+        color:"#000000"
+    },
     opacitycss:{
         //flex:1,
         height:200,

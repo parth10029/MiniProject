@@ -8,6 +8,11 @@ import {showcat} from "../actions/categoryActions";
 import constant from '../helper/themeHelper';
 
 class customer extends Component<Props> {
+
+    componentDidMount(){
+        this.props.showcat()
+    }
+
     constructor(props) {
         super(props);
         this.state = {

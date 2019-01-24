@@ -1,21 +1,70 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TextInput, Button, Text, ImageBackground, Image,TouchableOpacity} from 'react-native';
+import {
+    StyleSheet,
+    View,
+    TextInput,
+    Button,
+    Text,
+    ImageBackground,
+    Image,
+    TouchableOpacity,
+} from 'react-native';
 import FIcon from 'react-native-vector-icons/Feather';
 import EIcon from 'react-native-vector-icons/Entypo';
+import FAIcon from 'react-native-vector-icons/FontAwesome';
 import {connect} from 'react-redux';
-import {showcat} from '../actions/categoryActions';
 import {NavigationActions, StackActions} from "react-navigation";
 import ImagePicker from "react-native-image-picker";
 import AwesomePicker from 'react-native-awesome-picker';
 import constant from '../helper/themeHelper';
+import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {RadioGroup, RadioButton} from 'react-native-flexi-radio-button';
+import MIcon from 'react-native-vector-icons/MaterialIcons';
+import {showsubproduct} from "../actions/sub_productActions";
+import index from "react-native-picker";
 
-export default class addproduct extends Component<Props> {
-
-    state = {
-        pickedImage: null,
-        language:'js'
+class addproduct extends Component<Props> {
+    constructor(props) {
+        super(props);
+        this.state = {
+            language:'',
+            pickedImage: null,
+            refreshing:false,
+            product_type: '',
+            subproduct: props.navigation.state.params.subproductdetail,
+        }
     }
 
+    // componentDidMount(){
+    //     this.props.showsubproduct(this.state.subproduct.id)
+    // }
+
+    keyExtractor = (item) => {
+        return item.id + "";
+    };
+
+    renderSeparator = ({leadingItem, section})=>{
+        return <View style={{height:10}}/>;
+    };
+
+    renderEmpty = () => {
+        return <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+            <Text style={{fontSize:15}}>
+                {"No data found"}
+            </Text>
+        </View>
+    };
+
+    onRefresh = () => {
+        debugger
+        this.setState({refreshing: true});
+        debugger
+        this.props.showsubproduct(this.state.subproduct.id).then(res=>{
+            this.setState({refreshing: false});
+        });
+    };
+
+    //image picker
     reset = () => {
         this.setState({
             pickedImage: null
@@ -36,17 +85,21 @@ export default class addproduct extends Component<Props> {
             }
         });
     }
+    //end of image picker
 
     resetHandler = () =>{
         this.reset();
     }
 
     render() {
+        const {refreshing} = this.state;
+        const {subproductList} = this.props;
+       // console.log(this.props);
         return (
             <ImageBackground source={require('./Images/uiImages/background.jpg')} style={styles.backgroundImage} blurRadius={2}>
                 <View style={[styles.MainContainer,styles.logocontainer]}>
                     <Image source={require('./Images/uiImages/Company_logo.png')} style={styles.logo}/>
-                    <Text>Fill the Product form</Text>
+                    <Text style={{color:'red'}}>Fill the Product form</Text>
                     <View style={styles.viewsection}>
                         <FIcon name="type" size={30} color="#900" style={styles.usericon}/>
                         <TextInput
@@ -69,13 +122,70 @@ export default class addproduct extends Component<Props> {
                         />
                     </View>
 
+                    <View style={styles.viewsection}>
+                        <MCIcon name="account-card-details" size={30} color="#900" style={styles.usericon}/>
+                        <TextInput
+                            placeholder="Details"
+                            placeholderTextColor={'#fa0505'}
+                            onChangeText={username => this.setState({username : username})}
+                            underlineColorAndroid='transparent'
+                            style={styles.TextInputStyleClass}
+                        />
+                    </View>
+
+                    <View style={styles.viewsection}>
+                        <MIcon name="devices-other" size={30} color="#900" style={styles.usericon}/>
+                        <RadioGroup
+                            onSelect = {(index, value) => {this.setState({product_type:value});
+                                this.props.showsubproduct(this.state.product_type).then(res=>{
+                                    this.setState({refreshing: false});})}}
+                            size={20}
+                            thickness={2}
+                            color={'#fa0505'}
+                            selectedIndex={1}
+                            style={{flexDirection:'row'}}
+                        >
+                            <RadioButton value={'1'}>
+                                <Text>Tablet</Text>
+                            </RadioButton>
+
+                            <RadioButton value={'2'}>
+                                <Text>computer</Text>
+                            </RadioButton>
+
+                            <RadioButton value={'3'}>
+                                <Text>mobile</Text>
+                            </RadioButton>
+
+                            <RadioButton value={'4'}>
+                                <Text>wearable</Text>
+                            </RadioButton>
+
+                        </RadioGroup>
+                    </View>
+
+                    <View style={styles.viewsection}>
+                    <FAIcon name="product-hunt" size={30} color="#900" style={styles.usericon}/>
                     <View style={styles.container12}>
                         <AwesomePicker
-                            selectedValue={this.state.language}
-                            onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue, itemIndex})}>
-                            <AwesomePicker.Item label="Java" value="java"/>
-                            <AwesomePicker.Item label="JavaScript" value="js"/>
+                            //selectedValue={}
+                            onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue, itemIndex})}
+                            data={subproductList}
+                            contentContainerStyle={{top:20}}
+                            automaticallyAdjustContentInsets={false}
+                            keyExtractor={this.keyExtractor}
+                            ItemSeparatorComponent={this.renderSeparator}
+                            ListEmptyComponent={this.renderEmpty}
+                            onRefresh={this.onRefresh}
+                            refreshing={refreshing}
+                        >
+                            {subproductList.map((item,index)=>{
+                                <AwesomePicker.Item label={item.name} value={item.name}/>
+                            })}
+
+                            {/*<AwesomePicker.Item label="JavaScript" value="js"/>*/}
                         </AwesomePicker>
+                    </View>
                     </View>
 
                     <View>
@@ -209,3 +319,15 @@ const styles = StyleSheet.create({
         marginBottom: 15
     }
 });
+const mapStateToProps = (state) => {
+    const {loading,subproductList} = state.onRefreshsubproduct;
+    return {
+        loading,
+        subproductList
+
+    };
+};
+
+export default connect(mapStateToProps,{
+    showsubproduct
+})(addproduct);
