@@ -31,7 +31,6 @@ class addproduct extends Component<Props> {
             pickedImage: null,
             refreshing:false,
             product_type: '',
-            subproduct: props.navigation.state.params.subproductdetail,
         }
     }
 
@@ -39,30 +38,30 @@ class addproduct extends Component<Props> {
     //     this.props.showsubproduct(this.state.subproduct.id)
     // }
 
-    keyExtractor = (item) => {
-        return item.id + "";
-    };
-
-    renderSeparator = ({leadingItem, section})=>{
-        return <View style={{height:10}}/>;
-    };
-
-    renderEmpty = () => {
-        return <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
-            <Text style={{fontSize:15}}>
-                {"No data found"}
-            </Text>
-        </View>
-    };
-
-    onRefresh = () => {
-        debugger
-        this.setState({refreshing: true});
-        debugger
-        this.props.showsubproduct(this.state.subproduct.id).then(res=>{
-            this.setState({refreshing: false});
-        });
-    };
+    // keyExtractor = (item) => {
+    //     return item.id + "";
+    // };
+    //
+    // renderSeparator = ({leadingItem, section})=>{
+    //     return <View style={{height:10}}/>;
+    // };
+    //
+    // renderEmpty = () => {
+    //     return <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+    //         <Text style={{fontSize:15}}>
+    //             {"No data found"}
+    //         </Text>
+    //     </View>
+    // };
+    //
+    // onRefresh = () => {
+    //     debugger
+    //     this.setState({refreshing: true});
+    //     debugger
+    //     this.props.showsubproduct(this.state.subproduct.id).then(res=>{
+    //         this.setState({refreshing: false});
+    //     });
+    // };
 
     //image picker
     reset = () => {
@@ -94,6 +93,8 @@ class addproduct extends Component<Props> {
     render() {
         const {refreshing} = this.state;
         const {subproductList} = this.props;
+        const {subproductdetail} = this.props;
+        const {subproduct}= this.props.navigation.state.params.subproductdetail;
        // console.log(this.props);
         return (
             <ImageBackground source={require('./Images/uiImages/background.jpg')} style={styles.backgroundImage} blurRadius={2}>
@@ -173,11 +174,6 @@ class addproduct extends Component<Props> {
                             data={subproductList}
                             contentContainerStyle={{top:20}}
                             automaticallyAdjustContentInsets={false}
-                            keyExtractor={this.keyExtractor}
-                            ItemSeparatorComponent={this.renderSeparator}
-                            ListEmptyComponent={this.renderEmpty}
-                            onRefresh={this.onRefresh}
-                            refreshing={refreshing}
                         >
                             {subproductList.map((item,index)=>{
                                 <AwesomePicker.Item label={item.name} value={item.name}/>
@@ -324,7 +320,6 @@ const mapStateToProps = (state) => {
     return {
         loading,
         subproductList
-
     };
 };
 

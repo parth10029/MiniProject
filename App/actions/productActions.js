@@ -17,3 +17,21 @@ export const showproduct = (productList) => {
             });
     };
 };
+
+export const showproductById = (userId) => {
+    debugger
+    return (dispatch, getState) => {
+        return fetch('http://localhost:5000/getproductById/'+userId)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                dispatch({
+                    type: SET_PRODUCT_LIST,
+                    payload: responseJson
+                });
+                return Promise.resolve(true);
+            })
+            .catch((error) => {
+                alert(error);
+            });
+    };
+};

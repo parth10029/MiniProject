@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TextInput, Button, Text, ImageBackground, Image} from 'react-native';
+import { StyleSheet, View, TextInput, Button, Text, ImageBackground, Image,AsyncStorage} from 'react-native';
 import AIcon from 'react-native-vector-icons/AntDesign';
 import FIcon from 'react-native-vector-icons/FontAwesome';
 import {NavigationActions, StackActions} from "react-navigation";
@@ -17,13 +17,23 @@ class Login extends Component<Props> {
         }
     }
 
+    storeData = async (user)=>{
+        try {
+            await AsyncStorage.setItem('user', JSON.stringify(user));
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     userlogin = () =>{
+        debugger
         const {username,password} = this.state;
         this.props.userLogin({username,password})
             .then(res=>{
             const {userData} = this.props;
             if(userData.user_type === "customer"){
                 //alert('Welcome '+userData.username)
+                 this.storeData(userData)
                 const {navigation} = this.props;
                 navigation.dispatch(StackActions.reset({
                     index: 0,

@@ -1,10 +1,27 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TextInput, Button, Text, ImageBackground, Image,TouchableOpacity} from 'react-native';
+import {
+    StyleSheet,
+    View,
+    TextInput,
+    Button,
+    Text,
+    ImageBackground,
+    Image,
+    TouchableOpacity,
+    AsyncStorage
+} from 'react-native';
 import AIcon from 'react-native-vector-icons/AntDesign';
 import FIcon from 'react-native-vector-icons/FontAwesome';
 import Icon from "react-native-vector-icons/RNIMigration";
+import {connect} from "react-redux";
+
 
 export default class vendor extends Component<Props> {
+
+    clearAsyncStorage = async() => {
+        AsyncStorage.clear();
+        this.props.navigation.navigate('Login')
+    }
 
     nav = () => {
         this.props.navigation.navigate('addproduct');
@@ -13,6 +30,11 @@ export default class vendor extends Component<Props> {
     render() {
         return (
             <ImageBackground source={require('./Images/uiImages/background.jpg')} style={styles.backgroundImage} blurRadius={2}>
+                <View style={{flexDirection: 'row', justifyContent: 'space-evenly', paddingTop: 30}}>
+                <TouchableOpacity onPress={this.clearAsyncStorage}>
+                    <AIcon name="logout" size={30} style={styles.homebutton}/>
+                </TouchableOpacity>
+                </View>
                 <View style={[styles.MainContainer,styles.logocontainer]}>
                     <Image source={require('./Images/uiImages/Company_logo.png')} style={styles.logo}/>
 
@@ -38,6 +60,9 @@ export default class vendor extends Component<Props> {
 }
 const styles = StyleSheet.create({
 
+    homebutton:{
+        color:"#000000",
+    },
     touchabletext:{
         color:'#fa0505',
         fontWeight: "bold",

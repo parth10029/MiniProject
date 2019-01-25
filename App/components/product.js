@@ -1,5 +1,15 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, ImageBackground, FlatList} from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    ScrollView,
+    TouchableOpacity,
+    Image,
+    ImageBackground,
+    FlatList,
+    AsyncStorage
+} from 'react-native';
 import constant from "../helper/themeHelper";
 import {connect} from "react-redux";
 import {showproduct} from "../actions/productActions";
@@ -7,6 +17,11 @@ import IIcon from "react-native-vector-icons/Ionicons";
 import AIcon from "react-native-vector-icons/AntDesign";
 
 class product extends Component {
+
+    clearAsyncStorage = async() => {
+        AsyncStorage.clear();
+        this.props.navigation.navigate('Login')
+    }
 
 
     constructor(props){
@@ -78,9 +93,12 @@ class product extends Component {
 
         return (
             <ImageBackground source={require('./Images/uiImages/background.jpg')} style={styles.backgroundImage} blurRadius={2}>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 30}}>
+                <View style={{flexDirection: 'row', justifyContent: 'space-evenly', paddingTop: 30}}>
                     <TouchableOpacity onPress={()=>this.props.navigation.navigate('subproduct')}>
                         <IIcon name="ios-arrow-back" size={30} style={styles.backbutton}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.clearAsyncStorage}>
+                        <AIcon name="logout" size={30} style={styles.homebutton}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>this.props.navigation.navigate('customer')}>
                         <AIcon name="home" size={30} style={styles.homebutton}/>

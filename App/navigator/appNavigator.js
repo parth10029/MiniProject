@@ -10,9 +10,9 @@ import subproduct from '../components/subproduct';
 import productdetail from '../components/productdetail';
 
 const drawer=createStackNavigator({
+    home,
     registration,
     Login,
-    home,
     vendor,
     customer,
     addproduct,
@@ -24,7 +24,7 @@ const drawer=createStackNavigator({
         navigationOptions: {
             headerVisible: false
         }
-    ,initialRouteName:'customer'
+    ,initialRouteName:'home'
     }
 
 );

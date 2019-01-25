@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TextInput, Button, Text, ImageBackground, Image,TouchableOpacity,FlatList,ScrollView} from 'react-native';
-import AIcon from 'react-native-vector-icons/AntDesign';
+import { StyleSheet, View, TextInput, Button, Text, ImageBackground, Image,TouchableOpacity,FlatList,ScrollView,AsyncStorage} from 'react-native';
 import FIcon from 'react-native-vector-icons/FontAwesome';
 import {connect} from 'react-redux';
 import {NavigationActions, StackActions} from "react-navigation";
 import {showcat} from "../actions/categoryActions";
 import constant from '../helper/themeHelper';
+import IIcon from "react-native-vector-icons/Ionicons";
+import AIcon from "react-native-vector-icons/AntDesign";
+
 
 class customer extends Component<Props> {
+
+    clearAsyncStorage = async() => {
+        AsyncStorage.clear();
+        this.props.navigation.navigate('Login')
+    }
 
     componentDidMount(){
         this.props.showcat()
@@ -75,6 +82,17 @@ class customer extends Component<Props> {
 
         return (
             <ImageBackground source={require('./Images/uiImages/background.jpg')} style={styles.backgroundImage} blurRadius={2}>
+                <View style={{flexDirection: 'row', justifyContent: 'space-evenly', paddingTop: 30}}>
+                    <TouchableOpacity>
+                        <IIcon name="ios-arrow-back" size={30} style={styles.backbutton}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.clearAsyncStorage}>
+                        <AIcon name="logout" size={30} style={styles.homebutton}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity >
+                        <AIcon name="home" size={30} style={styles.homebutton} onPress={()=>alert("You are on home page only")}/>
+                    </TouchableOpacity>
+                </View>
                 <View style={[styles.MainContainer,styles.logocontainer]}>
                     <Image source={require('./Images/uiImages/Company_logo.png')} style={styles.logo}/>
                     <View style={styles.container}>
@@ -98,6 +116,13 @@ class customer extends Component<Props> {
 }
 const styles = StyleSheet.create({
 
+    homebutton:{
+        color:"#000000",
+    },
+
+    backbutton:{
+        color:"#000000"
+    },
     opacitycss:{
         flexDirection:'row',
     },

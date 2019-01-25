@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, ImageBackground, FlatList} from 'react-native';
 import constant from "../helper/themeHelper";
 import {connect} from "react-redux";
-import {showproduct} from "../actions/productActions";
+import {showproductById} from "../actions/productActions";
 import IIcon from "react-native-vector-icons/Ionicons";
 import AIcon from "react-native-vector-icons/AntDesign";
 
@@ -12,70 +12,62 @@ class productdetail extends Component {
     constructor(props){
         super(props);
         this.state={
-            productdetails: props.navigation.state.params.productdetails,
             refreshing:false,
 
         }
     }
-    componentDidMount(){
-
-        this.props.showproduct(this.state.productdetails.id)
-
-    }
-    keyExtractor = (item) => {
-        return item.id + "";
-    };
-
-    renderSeparator = ({leadingItem, section})=>{
-        return <View style={{height:10}}/>;
-    };
-
-    renderEmpty = () => {
-        return <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
-            <Text style={{fontSize:15}}>
-                {"No data found"}
-            </Text>
-        </View>
-    };
-
-    onRefresh = () => {
-        debugger
-        this.setState({refreshing: true});
-        this.props.showproduct(this.state.productdetails.id).then(res=>{
-            this.setState({refreshing: false});
-        });
-    };
-
-    // onRowClick = (item) => {
-    //     //this.props.navigation.navigate('productdetails',{productdetail: item});
-    // };
-
-    renderItem = ({item, index}) => {
-        const {rowContainer} = styles;
-        return(
-            <ScrollView>
-
-                <TouchableOpacity
-                    style={styles.opacitycss}
-                    // onPress={()=>this.onRowClick(item)}
-                >
-                    <View key={index} style={styles.rowContainer}>
-                        <Image source={{uri:'http://localhost:5000/'+item.image}} style={styles.flatimage} resizeMode='contain'/>
-                        <Text style={{fontSize: 20}}>
-                            {item.product_name}</Text>
-                    </View>
-                </TouchableOpacity>
-
-            </ScrollView>
-        )
-    };
+//     componentDidMount(){
+// debugger
+//         const id = this.props.navigation.getParam('productdetails','no-details');
+//         this.props.showproductById(id)
+//
+//     }
+//     keyExtractor = (item) => {
+//         return item.id + "";
+//     };
+//
+//     renderSeparator = ({leadingItem, section})=>{
+//         return <View style={{height:10}}/>;
+//     };
+//
+//     renderEmpty = () => {
+//         return <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+//             <Text style={{fontSize:15}}>
+//                 {"No data found"}
+//             </Text>
+//         </View>
+//     };
+//
+//     renderItem = ({item, index}) => {
+//         const {rowContainer} = styles;
+//         return(
+//             <ScrollView>
+//
+//                 {/*<TouchableOpacity*/}
+//                     {/*style={styles.opacitycss}*/}
+//                 {/*>*/}
+//                     <View key={index} style={styles.rowContainer}>
+//                         <Image source={{uri:'http://localhost:5000/'+item.image}} style={styles.flatimage} resizeMode='contain'/>
+//                         <Text style={{fontSize: 20}}>
+//                             {item.product_name}</Text>
+//                         <Text style={{fontSize: 20}}>
+//                             {item.price}</Text>
+//                         <Text style={{fontSize: 20}}>
+//                             {item.detail}</Text>
+//                     </View>
+//                 {/*</TouchableOpacity>*/}
+//
+//             </ScrollView>
+//         )
+//     };
 
 
     render() {
-        const {refreshing} = this.state;
-        const {productList} = this.props;
-        console.log(this.props);
-
+        // const {refreshing} = this.state;
+        // const {productList} = this.props;
+        // console.log(this.props);
+        const item = this.props.navigation.getParam('productdetails','no-details');
+alert(item)
         return (
             <ImageBackground source={require('./Images/uiImages/background.jpg')} style={styles.backgroundImage} blurRadius={2}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 30}}>
@@ -86,23 +78,22 @@ class productdetail extends Component {
                         <AIcon name="home" size={30} style={styles.homebutton}/>
                     </TouchableOpacity>
                 </View>
-                <View style={[styles.MainContainer,styles.logocontainer]}>
-                    <Text style={{color:'red',fontSize:25}}>Welcome to product detail page!</Text>
-                    <Image source={require('./Images/uiImages/Company_logo.png')} style={styles.logo}/>
-                    <View style={styles.container}>
-                        <FlatList data={productList}
-                                  contentContainerStyle={{top:20}}
-                                  automaticallyAdjustContentInsets={false}
-                                  renderItem={this.renderItem}
-                                  keyExtractor={this.keyExtractor}
-                                  ItemSeparatorComponent={this.renderSeparator}
-                                  ListEmptyComponent={this.renderEmpty}
-                                  onRefresh={this.onRefresh}
-                                  refreshing={refreshing}
-                                  ListFooterComponent={<View style={{ height: 50}}/>}
-                        />
-                    </View>
+                <View>
+                    <Image source={{uri:'http://localhost:5000/'+item.image}} style={styles.flatimage} resizeMode='contain'/>
                 </View>
+                    {/*<View style={styles.container}>*/}
+                        {/*<FlatList data={productList}*/}
+                                  {/*contentContainerStyle={{top:20}}*/}
+                                  {/*automaticallyAdjustContentInsets={false}*/}
+                                  {/*renderItem={this.renderItem}*/}
+                                  {/*keyExtractor={this.keyExtractor}*/}
+                                  {/*ItemSeparatorComponent={this.renderSeparator}*/}
+                                  {/*ListEmptyComponent={this.renderEmpty}*/}
+                                  {/*// onRefresh={this.onRefresh}*/}
+                                  {/*refreshing={refreshing}*/}
+                                  {/*ListFooterComponent={<View style={{ height: 50}}/>}*/}
+                        {/*/>*/}
+                    {/*</View>*/}
             </ImageBackground>
         );
     }
@@ -117,11 +108,7 @@ const styles = StyleSheet.create({
     backbutton:{
         color:"#000000"
     },
-    opacitycss:{
-        //flex:1,
-        height:200,
-        flexDirection:'row',
-    },
+
     titleText: {
         fontSize: 12,
         alignSelf: 'center',
@@ -132,6 +119,7 @@ const styles = StyleSheet.create({
         borderRadius:5,
         padding:25,
         borderWidth:1,
+        height:200,
         borderColor:'#FF0000',
         marginLeft:10,
         marginRight:10
@@ -139,7 +127,6 @@ const styles = StyleSheet.create({
     flatimage:{
         height:'80%',
         width:'100%',
-
         flexDirection:'row'
     },
     container: {
@@ -162,26 +149,6 @@ const styles = StyleSheet.create({
         width:null,
         padding:10,
     },
-    logo:{
-        width:240,
-        height:240,
-    },
-
-    logocontainer:{
-        flex:1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-
-    MainContainer :{
-        justifyContent: 'center',
-        margin: 10
-    },
-
-    viewsection:{
-        //flex:1,
-        flexDirection: 'row',
-    },
 
     usericon:{
         padding: 6,
@@ -191,7 +158,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 7,
         height: 40,
-        //flex:1,
         alignSelf:'stretch',
         fontWeight:'bold',
         borderWidth: 1,
@@ -202,7 +168,6 @@ const styles = StyleSheet.create({
     },
     MainContainer1: {
         justifyContent: 'center',
-        //flex: 1,
         paddingTop: 30,
     },
 
@@ -211,7 +176,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection:'row',
         height: 100,
-        //flex:1,
         margin: 5,
     },
 
@@ -232,5 +196,5 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps,{
-    showproduct
+    showproductById
 })(productdetail);
