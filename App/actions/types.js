@@ -5,6 +5,7 @@ export const SET_POST = "SET_POST";
 export const user_login="user_login";
 export const SET_PRODUCT_LIST = "SET_PRODUCT_LIST";
 export const SET_SUBPRODUCT_LIST = "SET_SUBPRODUCT_LIST";
+export const delete_user = "delete_user";
 
 //customer
 export const SET_CAT_LIST = "SET_CAT_LIST";

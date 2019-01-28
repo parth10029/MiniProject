@@ -7,9 +7,24 @@ import {showcat} from "../actions/categoryActions";
 import constant from '../helper/themeHelper';
 import IIcon from "react-native-vector-icons/Ionicons";
 import AIcon from "react-native-vector-icons/AntDesign";
-
+import {userDelete} from '../actions/deleteAction';
 
 class customer extends Component<Props> {
+
+    delete = () =>{
+        //validation here...
+        const {id} = this.state;
+        this.props.userDelete(id)
+            .then((res)=>{
+                const {navigation} = this.props;
+                navigation.dispatch(StackActions.reset({
+                    index: 0,
+                    actions: [NavigationActions.navigate({ routeName: 'Login' })],
+                }));
+            }).catch(err=>{
+            alert("deletion Failed!")
+        })
+    };
 
     clearAsyncStorage = async() => {
         AsyncStorage.clear();
@@ -93,10 +108,17 @@ class customer extends Component<Props> {
                         <AIcon name="home" size={30} style={styles.homebutton} onPress={()=>alert("You are on home page only")}/>
                     </TouchableOpacity>
                 </View>
+                <View>
+                    <TouchableOpacity onPress={this.delete}>
+                    <AIcon name="deleteuser" size={30} style={styles.homebutton}/>
+                    <Text>Delete your  Account!</Text>
+                    </TouchableOpacity>
+                </View>
                 <View style={[styles.MainContainer,styles.logocontainer]}>
                     <Image source={require('./Images/uiImages/Company_logo.png')} style={styles.logo}/>
                     <View style={styles.container}>
                         <FlatList data={userList}
+                                  numColumns={2}
                                   contentContainerStyle={{top:20}}
                                   automaticallyAdjustContentInsets={false}
                                   renderItem={this.renderItem}
@@ -124,6 +146,7 @@ const styles = StyleSheet.create({
         color:"#000000"
     },
     opacitycss:{
+        //alignSelf:'',
         flexDirection:'row',
     },
     titleText: {
@@ -146,7 +169,7 @@ const styles = StyleSheet.create({
     },
     container: {
         //flex: 1,
-        width:'100%',
+        width:constant.screenWidth,
         backgroundColor: constant.appColor,
         justifyContent:'center',
     },
@@ -227,12 +250,16 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     const {loading,userList} = state.fetchcategory;
+    const {loadings,userData} = state.delete_user;
     return {
         loading,
-        userList
+        userList,
+        userData,
+        loadings
     };
 };
 
 export default connect(mapStateToProps,{
-    showcat
+    showcat,
+    userDelete
 })(customer);

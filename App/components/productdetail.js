@@ -67,7 +67,6 @@ class productdetail extends Component {
         // const {productList} = this.props;
         // console.log(this.props);
         const item = this.props.navigation.getParam('productdetails','no-details');
-alert(item)
         return (
             <ImageBackground source={require('./Images/uiImages/background.jpg')} style={styles.backgroundImage} blurRadius={2}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 30}}>

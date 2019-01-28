@@ -2,15 +2,13 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    TextInput,
-    Button,
     Text,
     ImageBackground,
     Image,
-    AsyncStorage,
-    TouchableOpacity
+    AsyncStorage
 } from 'react-native';
 import {connect} from "react-redux";
+import constant from '../helper/themeHelper';
 
 
 export default class home extends Component<Props> {
@@ -61,17 +59,6 @@ export default class home extends Component<Props> {
     }
 }
 const styles = StyleSheet.create({
-    touchabletext:{
-        color:'#fa0505',
-        fontWeight: "bold",
-        textAlign:"center"
-    },
-    touchpic:{
-        flexDirection: 'row',
-        width:200,
-        height:200,
-        alignItems: 'center',
-    },
 
     backgroundImage:{
         flex:1,
@@ -96,32 +83,10 @@ const styles = StyleSheet.create({
         margin: 10
     },
 
-    viewsection:{
-        flex:1,
-        flexDirection: 'row',
-    },
-
-    usericon:{
-        padding: 6,
-    },
-
-    TextInputStyleClass: {
-        textAlign: 'center',
-        marginBottom: 7,
-        height: 40,
-        flex:1,
-        alignSelf:'stretch',
-        fontWeight:'bold',
-        borderWidth: 1,
-        borderColor: '#000000',
-        borderRadius: 5 ,
-        backgroundColor:'#ffffff',
-        color: '#424242',
-    },
-
     title:{
         fontSize: 22,
-        color: "#fa0505",
+        color: constant.appColor1,
+        //color: "#fa0505",
         textAlign: 'center',
         marginBottom: 15
     }

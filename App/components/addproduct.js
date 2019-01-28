@@ -91,10 +91,11 @@ class addproduct extends Component<Props> {
     }
 
     render() {
+        debugger
         const {refreshing} = this.state;
         const {subproductList} = this.props;
         const {subproductdetail} = this.props;
-        const {subproduct}= this.props.navigation.state.params.subproductdetail;
+       // const {subproduct}= this.props.navigation.state.params.subproductdetail;
        // console.log(this.props);
         return (
             <ImageBackground source={require('./Images/uiImages/background.jpg')} style={styles.backgroundImage} blurRadius={2}>
@@ -179,7 +180,7 @@ class addproduct extends Component<Props> {
                                 <AwesomePicker.Item label={item.name} value={item.name}/>
                             })}
 
-                            {/*<AwesomePicker.Item label="JavaScript" value="js"/>*/}
+                            <AwesomePicker.Item label="JavaScript" value="js"/>
                         </AwesomePicker>
                     </View>
                     </View>
